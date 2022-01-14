@@ -1,16 +1,28 @@
 const moment = require('moment');
+const momentTz = require('moment-timezone');
 const Users = require('../models/users');
+const Greetings = require('../models/greetings');
 
 class UserController {
   async insertUser(req, res, next) {
     try {
       let { first_name, last_name, birthday_date, location } = req.body;
-      birthday_date = new Date(birthday_date);
-      let user = await Users.create({ first_name, last_name, birthday_date, location });
+      let date = new Date(birthday_date);
 
-      console.log('success', user);
+      let user = await Users.create({ first_name, last_name, birthday_date: moment(date).utc(true), location });
+
+      let setHour = moment(date.setHours(date.getHours() + 9)).format();
+      let setTimezone = momentTz(setHour).tz(location, true).format();
+      let offset = momentTz().tz(user.location).utcOffset() / 60;
+
+      let send_date = setTimezone;
+      let message = `Hey ${user.first_name} ${user.last_name}, it's your birthday`;
+      let user_id = user._id;
+      let greetings = await Greetings.create({ message, send_date, user_id, offset });
+      
       res.status(201).json({
-        result: user
+        result: user,
+        greetings: greetings
       });
     } catch (error) {
       console.log('error', error);

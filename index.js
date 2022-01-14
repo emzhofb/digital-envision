@@ -17,6 +17,17 @@ mongoose
 const userRoutes = require('./routes/users');
 app.use('/', userRoutes);
 
+const schedule = require('node-schedule');
+const { sendBirthdayGreetings, reSendGreetings } = require('./cron/greetings');
+const everyMinute = '* * * * *';
+const everyHour = '0 * * * *';
+schedule.scheduleJob(everyHour, function() {
+  sendBirthdayGreetings();
+});
+schedule.scheduleJob(everyMinute, function() {
+  reSendGreetings();
+});
+
 app.listen(port, () => {
   console.log('listening on port', port);
 });
