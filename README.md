@@ -32,5 +32,20 @@ DELETE localhost:3000/user/:id
 localhost:3000/user/61e0f32b1259ba90ff6a1e36
 ```
 
+Update User
+PUT localhost:3000/user/:id
+```
+localhost:3000/user/61e17256d5fdf576c004bb5d
+```
+send this body
+```
+{
+  "first_name": "John",
+  "last_name": "Doe",
+  "birthday_date": "14-Jan-2000",
+  "location": "Asia/Tokyo"
+}
+```
+
 POSTMAN Collection
 https://www.getpostman.com/collections/de642d416c97ec11adf1
