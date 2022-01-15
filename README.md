@@ -1,5 +1,9 @@
 Digital Envision Test
 
+How to start project
+1. npm install
+2. node index.js
+
 Add User
 
 POST localhost:3000/user
